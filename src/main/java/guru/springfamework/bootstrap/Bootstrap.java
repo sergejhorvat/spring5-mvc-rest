@@ -10,8 +10,10 @@ import org.springframework.stereotype.Component;
 // Spring boot events - CommandLineRunner
 public class Bootstrap implements CommandLineRunner {
 
+    // Inject repository
     public CategoryRepository categoryRepository;
 
+    // Wire-up trough constructor
     public Bootstrap(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
@@ -40,6 +42,8 @@ public class Bootstrap implements CommandLineRunner {
         categoryRepository.save(fresh);
         categoryRepository.save(exotic);
         categoryRepository.save(nuts);
+
+        System.out.println("Data loaded = " + categoryRepository.count());
     }
 
 
