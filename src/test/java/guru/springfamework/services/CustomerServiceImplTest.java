@@ -28,10 +28,10 @@ public class CustomerServiceImplTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        customerService=new CustomerServiceImpl();
+        customerService= new CustomerServiceImpl();
         customerService.setCustomerMapper(customerMapper);
         customerService.setCustomerRepository(customerRepository);
-        // customerService = new CustomerServiceImpl(customerMapper, customerRepository);
+        //customerService = new CustomerServiceImpl(customerMapper, customerRepository);
     }
 
     @Test
@@ -92,6 +92,28 @@ public class CustomerServiceImplTest {
 
         //then
         assertEquals(customerDTO.getFirstname(), savedDto.getFirstname());
+        assertEquals("/api/v1/customer/1", savedDto.getCustomerUrl());
+    }
+
+    @Test
+    public void saveCustomerByDTO() throws  Exception{
+
+        //given
+        CustomerDTO customerDTO = new CustomerDTO();
+        customerDTO.setFirstname("Jim");
+
+        Customer savedCustomer = new Customer();
+        savedCustomer.setFirstname(customerDTO.getFirstname());
+        savedCustomer.setLastname(customerDTO.getLastname());
+        savedCustomer.setId(1l);
+
+        when(customerRepository.save(any(Customer.class))).thenReturn(savedCustomer);
+
+        //when
+        CustomerDTO savedDto = customerService.saveCustomerByDTO(1L,customerDTO);
+
+        //then
+        assertEquals(customerDTO.getFirstname(),savedDto.getFirstname());
         assertEquals("/api/v1/customer/1", savedDto.getCustomerUrl());
     }
 }
